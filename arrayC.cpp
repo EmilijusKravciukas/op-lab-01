@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <string>
 
 using namespace std;
 
@@ -8,7 +9,7 @@ struct Studentas{
         string vardas;
         string pavarde;
         int n;
-        double nd;
+        int* nd = nullptr;
         int egz;
         double mediana;
 };
@@ -16,62 +17,138 @@ struct Studentas{
 int m;
 
 void duomSkait(Studentas*& studentai);
+void ivestis(Studentas*&);
 void atvaizd(Studentas*& studentai, int skaiciavimas);
 
 int main(){
     int skaiciavimas = 0; //0 - vid, 1 - med
 
-    ifstream DF("data.txt");
-    DF >> m;
-    DF.close();
-
-    Studentas* studentai{new Studentas[m]{}};
+    Studentas* studentai = nullptr;
 
 
-    duomSkait(studentai);
+
+    //duomSkait(studentai);
     atvaizd(studentai, skaiciavimas);
 
 
     return 0;
 }
 
+void ivestis(Studentas*& studentai){
+    bool loop = true;
+    char cInput = ' ';
+    int mTemp = 0;
+    int nTemp = 0;
+    while(loop){
+        cout << "Pridėti naują studentą? (T/N): ";
+        cin >> cInput;
+        if(cInput == 'T'){
+            cout << "Pasirinkite įvedimo būdą:" << endl
+            << "(1) Duomenų įvedimas ranka" << endl
+            << "(2) Generuoti pažymius" << endl
+            << "(3) Generuoti vardą, pavardę ir pažymius" << endl
+            << "(4) Baigti darbą" << endl;
 
-void duomSkait(Studentas*& studentai){
-    ifstream DF("data.txt");
+            cin >> cInput;
 
-    DF >> m;
+            if(cInput == '1'){
+                Studentas* studentaiTemp = new Studentas[mTemp];
+                bool ndLoop = true;
 
-    for(int i = 0; i < m; i++){
-        DF >> studentai[i].vardas;
-        DF >> studentai[i].pavarde;
-        DF >> studentai[i].n;
-        int temp = 0;
-        int* medianaMas{new int[studentai[i].n]{}};
-        for(int j = 0; j < studentai[i].n; j++){
-            DF>>temp;
-            studentai[i].nd += temp;
-            medianaMas[j] = temp;
-        }
-        studentai[i].nd /= studentai[i].n;
-        for(int j = 0; j < studentai[i].n-1; j++){
-            for(int z = 0; z < studentai[i].n; z++){
-                if(medianaMas[j] < medianaMas[z]){
-                    temp = medianaMas[j];
-                    medianaMas[j] = medianaMas[z];
-                    medianaMas[z] = temp;
+                cout << "Įveskite studento vardą: ";
+                studentai[mTemp].vardas = stringIvestis();
+                cout << "Įveskite studento pavardę: ";
+                studentai[mTemp].pavarde = stringIvestis();
+                
+                while(ndLoop){
+                    cout << "Įveskite studento namų darbų pažymius (0 - pereiti prie egzamino pažymio įvesties): ";
+                    int temp = intIvestis();
+                    if(temp != 0){
+                        studentai[mTemp].nd[nTemp] = temp;
+                        nTemp++;
+                    } else {
+                        cout << "Įveskite studento egzamino pažymį: ";
+                        studentai[mTemp].egz = intIvestis();
+                        ndLoop = false;
+                    }
                 }
             }
         }
-        if(studentai[i].n % 2 == 0){
-            studentai[i].mediana = (medianaMas[studentai[i].n/2] + medianaMas[studentai[i].n/2 + 1]) / 2;
-        } else {
-            studentai[i].mediana = medianaMas[studentai[i].n/2 + 1];
-        }
-        DF>>studentai[i].egz;
     }
-
-    DF.close();
 }
+
+string stringIvestis(){
+    string cInput;
+    bool loop = false;
+
+    do{
+        loop = false;
+        cin >> cInput;
+        for(char a : cInput){
+            if(isblank(a) || isdigit(a) || cInput.length() > 16){
+                cout << "Klaida. Bandykite dar kartą: ";
+                loop = true;
+            }
+        }
+    }while(loop);
+
+    return cInput;
+}
+
+int intIvestis(){
+    int cInput;
+    bool loop = false;
+
+    do{
+        loop = false;
+        cin >> cInput;
+        for(char a : to_string(cInput)){
+            if(isblank(a) || !(isdigit(a)) || a < 0 || a > 10){
+                cout << "Klaida. Bandykite dar kartą: ";
+                loop = true;
+            }
+        }
+    }while(loop);
+
+    return cInput;
+}
+
+// void duomSkait(Studentas*& studentai){
+//     ifstream DF("data.txt");
+
+//     DF >> m;
+
+//     for(int i = 0; i < m; i++){
+//         DF >> studentai[i].vardas;
+//         DF >> studentai[i].pavarde;
+//         DF >> studentai[i].n;
+//         int temp = 0;
+//         int* medianaMas{new int[studentai[i].n]{}};
+//         for(int j = 0; j < studentai[i].n; j++){
+//             DF>>temp;
+//             studentai[i].nd += temp;
+//             medianaMas[j] = temp;
+//         }
+//         studentai[i].nd /= studentai[i].n;
+//         for(int j = 0; j < studentai[i].n-1; j++){
+//             for(int z = 0; z < studentai[i].n; z++){
+//                 if(medianaMas[j] < medianaMas[z]){
+//                     temp = medianaMas[j];
+//                     medianaMas[j] = medianaMas[z];
+//                     medianaMas[z] = temp;
+//                 }
+//             }
+//         }
+//         if(studentai[i].n % 2 == 0){
+//             studentai[i].mediana = (medianaMas[studentai[i].n/2] + medianaMas[studentai[i].n/2 + 1]) / 2;
+//         } else {
+//             studentai[i].mediana = medianaMas[studentai[i].n/2 + 1];
+//         }
+//         DF>>studentai[i].egz;
+//     }
+
+//     DF.close();
+// }
 
 void atvaizd(Studentas*& studentai, int skaiciavimas){
     if(skaiciavimas == 0) {
