@@ -8,7 +8,7 @@ struct Studentas{
         string vardas;
         string pavarde;
         int n;
-        double nd;
+        int* nd = nullptr;
         int egz;
         double mediana;
 };
@@ -16,16 +16,15 @@ struct Studentas{
 int m;
 
 void duomSkait(Studentas*& studentai);
+void ivestis(Studentas*&, int& mTemp);
 void atvaizd(Studentas*& studentai, int skaiciavimas);
 
 int main(){
     int skaiciavimas = 0; //0 - vid, 1 - med
+    int mTemp = 0;
 
-    ifstream DF("data.txt");
-    DF >> m;
-    DF.close();
+    Studentas* studentai = nullptr;
 
-    Studentas* studentai{new Studentas[m]{}};
 
 
     duomSkait(studentai);
@@ -35,6 +34,25 @@ int main(){
     return 0;
 }
 
+void ivestis(Studentas*&, int& mTemp){
+    bool loop = true;
+    char cInput = ' ';
+    while(loop){
+        cout << "Pridėti naują studentą? (T/N): ";
+        cin >> cInput;
+        if(cInput == 'T'){
+            cout << "Pasirinkite įvedimo būdą:" << endl
+            << "(1) Duomenų įvedimas ranka" << endl
+            << "(2) Generuoti pažymius" << endl
+            << "(3) Generuoti vardą, pavardę ir pažymius" << endl
+            << "(4) Baigti darbą" << endl;
+
+            cin >> cInput;
+
+            if(cInput == '')
+        }
+    }
+}
 
 void duomSkait(Studentas*& studentai){
     ifstream DF("data.txt");
