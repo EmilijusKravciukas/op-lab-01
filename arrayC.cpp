@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iomanip>
 #include <string>
+#include <random>
 
 using namespace std;
 
@@ -11,25 +12,24 @@ struct Studentas{
         int n;
         int* nd = nullptr;
         int egz;
+        double vid = 0;
         double mediana;
 };
-
-int m;
 
 void duomSkait(Studentas*& studentai);
 void ivestis(Studentas*&);
 void atvaizd(Studentas*& studentai, int skaiciavimas);
+string stringIvestis();
+int intIvestis();
+int randGen();
 
 int main(){
+    srand(time(nullptr));
     int skaiciavimas = 0; //0 - vid, 1 - med
 
     Studentas* studentai = nullptr;
 
-
-
-    //duomSkait(studentai);
-    atvaizd(studentai, skaiciavimas);
-
+    ivestis(studentai);
 
     return 0;
 }
@@ -37,8 +37,8 @@ int main(){
 void ivestis(Studentas*& studentai){
     bool loop = true;
     char cInput = ' ';
-    int mTemp = 0;
-    int nTemp = 0;
+    int m = 0;
+    int n = 0;
     while(loop){
         cout << "Pridėti naują studentą? (T/N): ";
         cin >> cInput;
@@ -52,25 +52,122 @@ void ivestis(Studentas*& studentai){
             cin >> cInput;
 
             if(cInput == '1'){
-                Studentas* studentaiTemp = new Studentas[mTemp];
+                n = 0;
+                Studentas* studentaiTemp = new Studentas[m];
+                for(int i = 0; i < m; i++){
+                    studentaiTemp[i] = studentai[i];
+                }
+                delete[] studentai;
+                Studentas* studentai = new Studentas[m + 1];
+                for(int i = 0; i < m; i++){
+                    studentai[i] = studentaiTemp[i];
+                }
+                delete[] studentaiTemp;
+
                 bool ndLoop = true;
 
                 cout << "Įveskite studento vardą: ";
-                studentai[mTemp].vardas = stringIvestis();
+                studentai[m].vardas = stringIvestis();
                 cout << "Įveskite studento pavardę: ";
-                studentai[mTemp].pavarde = stringIvestis();
+                studentai[m].pavarde = stringIvestis();
+                cout << "Įveskite studento namų darbų pažymius (0 - pereiti prie egzamino pažymio įvesties): ";
+
+                int* ndFin = new int[n];
                 
                 while(ndLoop){
-                    cout << "Įveskite studento namų darbų pažymius (0 - pereiti prie egzamino pažymio įvesties): ";
+                    int* ndTemp = new int[n];
+                    for(int i = 0; i < n; i++){
+                        ndTemp[i] = ndFin[i];
+                    }
+                    delete[] ndFin;
+                    int* ndFin = new int[n];
+                    for(int i; i < n; i++){
+                        ndFin[i] = ndTemp[i];
+                    }
+                    delete[] ndTemp;
+
                     int temp = intIvestis();
                     if(temp != 0){
-                        studentai[mTemp].nd[nTemp] = temp;
-                        nTemp++;
+                        ndFin[n] = temp;
+                        n++;
                     } else {
                         cout << "Įveskite studento egzamino pažymį: ";
-                        studentai[mTemp].egz = intIvestis();
+                        studentai[m].egz = intIvestis();
+                        studentai[m].n = n;
+                        studentai[m].nd = ndFin;
+
+                        for(int i = 0; i < n; i++){
+                            studentai[m].vid += studentai[m].nd[i];
+                        }
+                        studentai[m].vid /= n;
+
+                        for(int i = 0; i < n-1; i++){
+                            for(int j = i+1; j < n; j++){
+                                if(studentai[m].nd[i] < studentai[m].nd[j]){
+                                    temp = studentai[m].nd[i];
+                                    studentai[m].nd[i] = studentai[m].nd[j];
+                                    studentai[m].nd[j] = temp;
+                                }
+                            }
+                        }
+
+                        if(n )
+
                         ndLoop = false;
                     }
+                }
+            } else if(cInput = '2'){
+                n = 0;
+                Studentas* studentaiTemp = new Studentas[m];
+                for(int i = 0; i < m; i++){
+                    studentaiTemp[i] = studentai[i];
+                }
+                delete[] studentai;
+                Studentas* studentai = new Studentas[m + 1];
+                for(int i = 0; i < m; i++){
+                    studentai[i] = studentaiTemp[i];
+                }
+                delete[] studentaiTemp;
+
+                cout << "Įveskite studento vardą: ";
+                studentai[m].vardas = stringIvestis();
+                cout << "Įveskite studento pavardę: ";
+                studentai[m].pavarde = stringIvestis();
+
+                n = randGen(1, 10);
+                for(int i = 0; i < n; i++){
+                    studentai[m].nd[i] = randGen(1, 10);
+                }
+                studentai[m].egz = randGen(1, 10);
+            } else if(cInput == '3'){
+                n = 0;
+                Studentas* studentaiTemp = new Studentas[m];
+                for(int i = 0; i < m; i++){
+                    studentaiTemp[i] = studentai[i];
+                }
+                delete[] studentai;
+                Studentas* studentai = new Studentas[m + 1];
+                for(int i = 0; i < m; i++){
+                    studentai[i] = studentaiTemp[i];
+                }
+                delete[] studentaiTemp;
+
+                string vardai[7] = {"Rokas", "Karolis", "Nojus", "Edgaras", "Martynas", "Gytis", "Justas"};
+                string pavardes[7] = {"Kazlauskas", "Stankevičius", "Petrauskas", "Jankauskas", "Žukauskas", "Butkus", "Balčiūnas"};
+
+                studentai[m].vardas = vardai[randGen(0, 6)];
+                studentai[m].pavarde = pavardes[randGen(0, 6)];
+            } else if(cInput == '4'){
+                cout << "Pasirinkite skaičiavimo būdą: " << endl
+                    << "(1) Pagal pažymių vidurkį" << endl
+                    << "(2) Pagal pažymių medianą" << endl;
+
+                cin >> cInput;
+
+                if(cInput == '1'){
+                    atvaizd(studentai, 0);
+                } else if(cInput == '2'){
+                    atvaizd(studentai, 1);
                 }
             }
         }
@@ -113,44 +210,15 @@ int intIvestis(){
     return cInput;
 }
 
-// void duomSkait(Studentas*& studentai){
-//     ifstream DF("data.txt");
+int randGen(int sRange, int eRange){
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> distr(sRange, eRange);
 
-//     DF >> m;
+    return distr(gen);
+}
 
-//     for(int i = 0; i < m; i++){
-//         DF >> studentai[i].vardas;
-//         DF >> studentai[i].pavarde;
-//         DF >> studentai[i].n;
-//         int temp = 0;
-//         int* medianaMas{new int[studentai[i].n]{}};
-//         for(int j = 0; j < studentai[i].n; j++){
-//             DF>>temp;
-//             studentai[i].nd += temp;
-//             medianaMas[j] = temp;
-//         }
-//         studentai[i].nd /= studentai[i].n;
-//         for(int j = 0; j < studentai[i].n-1; j++){
-//             for(int z = 0; z < studentai[i].n; z++){
-//                 if(medianaMas[j] < medianaMas[z]){
-//                     temp = medianaMas[j];
-//                     medianaMas[j] = medianaMas[z];
-//                     medianaMas[z] = temp;
-//                 }
-//             }
-//         }
-//         if(studentai[i].n % 2 == 0){
-//             studentai[i].mediana = (medianaMas[studentai[i].n/2] + medianaMas[studentai[i].n/2 + 1]) / 2;
-//         } else {
-//             studentai[i].mediana = medianaMas[studentai[i].n/2 + 1];
-//         }
-//         DF>>studentai[i].egz;
-//     }
-
-//     DF.close();
-// }
-
-void atvaizd(Studentas*& studentai, int skaiciavimas){
+void atvaizd(Studentas*& studentai, int skaiciavimas, int m){
     if(skaiciavimas == 0) {
         cout << left << setw(16) << "Pavardė" << left << setw(16) << "Vardas" << left << setw(16) << "Galutinis (Vid.)" << endl;
         cout << "--------------------------------------------------------" << endl;
