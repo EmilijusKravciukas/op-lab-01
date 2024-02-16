@@ -54,7 +54,7 @@ void duomSkait(Studentas*& studentai){
         }
         studentai[i].nd /= studentai[i].n;
         for(int j = 0; j < studentai[i].n-1; j++){
-            for(int z = 0; z < studentai[i].n; z++){
+            for(int z = j+1; z < studentai[i].n; z++){
                 if(medianaMas[j] < medianaMas[z]){
                     temp = medianaMas[j];
                     medianaMas[j] = medianaMas[z];
