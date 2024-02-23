@@ -24,6 +24,8 @@ void atvaizd(Studentas*& studentai, int skaiciavimas, int m);
 string stringIvestis();
 int intIvestis();
 int randGen(int sRange, int eRange);
+double rastiVid(Studentas*& studentai, int m);
+double rastiMed(Studentas*& studentai, int m);
 
 int main(){
     srand(time(0));
@@ -98,26 +100,29 @@ void ivestis(Studentas*& studentai){
                     studentai[m].n = n+1;
                     studentai[m].nd = ndFin;
 
-                    for(int i = 0; i < n; i++){
-                        studentai[m].vid += studentai[m].nd[i];
-                    }
-                    studentai[m].vid /= n;
+                    // for(int i = 0; i < n; i++){
+                    //     studentai[m].vid += studentai[m].nd[i];
+                    // }
+                    // studentai[m].vid /= n;
 
-                    for(int i = 0; i < n-1; i++){
-                        for(int j = i+1; j < n; j++){
-                            if(studentai[m].nd[i] < studentai[m].nd[j]){
-                                temp = studentai[m].nd[i];
-                                studentai[m].nd[i] = studentai[m].nd[j];
-                                studentai[m].nd[j] = temp;
-                            }
-                        }
-                    }
+                    // for(int i = 0; i < n-1; i++){
+                    //     for(int j = i+1; j < n; j++){
+                    //         if(studentai[m].nd[i] < studentai[m].nd[j]){
+                    //             temp = studentai[m].nd[i];
+                    //             studentai[m].nd[i] = studentai[m].nd[j];
+                    //             studentai[m].nd[j] = temp;
+                    //         }
+                    //     }
+                    // }
 
-                    if(n % 2 == 0){
-                        studentai[m].mediana = (studentai[m].nd[n/2] + studentai[m].nd[n/2 + 1]) / 2;
-                    } else {
-                        studentai[m].mediana = studentai[m].nd[n/2 + 1];
-                    }
+                    // if(n % 2 == 0){
+                    //     studentai[m].mediana = (studentai[m].nd[n/2] + studentai[m].nd[n/2 + 1]) / 2;
+                    // } else {
+                    //     studentai[m].mediana = studentai[m].nd[n/2 + 1];
+                    // }
+
+                    studentai[m].mediana = rastiMed(studentai, m);
+                    studentai[m].vid = rastiVid(studentai, m);
 
                     ndLoop = false;
                 }
@@ -149,6 +154,8 @@ void ivestis(Studentas*& studentai){
             }
             studentai[m].nd = ndTemp;
             studentai[m].egz = randGen(1, 10);
+            studentai[m].mediana = rastiMed(studentai, m);
+            studentai[m].vid = rastiVid(studentai, m);
             m++;
         } else if(cInput == 3){
             n = 0;
@@ -177,6 +184,8 @@ void ivestis(Studentas*& studentai){
             }
             studentai[m].nd = ndTemp;
             studentai[m].egz = randGen(1, 10);
+            studentai[m].mediana = rastiMed(studentai, m);
+            studentai[m].vid = rastiVid(studentai, m);
 
             // for(int i = 0; i <= m; i++){
             //     cout << studentai[i].vardas << " " << studentai[i].pavarde << " (" << studentai[i].n << ") ";
@@ -256,6 +265,35 @@ int randGen(int sRange, int eRange){
     int r = rand() % eRange + sRange;
 
     return r;
+}
+
+double rastiVid(Studentas*& studentai, int m){
+    for(int i = 0; i < studentai[m].n; i++){
+        studentai[m].vid += studentai[m].nd[i];
+    }
+    studentai[m].vid /= studentai[m].n;
+
+    return studentai[m].vid;
+}
+
+double rastiMed(Studentas*& studentai, int m){
+    for(int i = 0; i < studentai[m].n; i++){
+        for(int j = i+1; j < studentai[m].n; j++){
+            if(studentai[m].nd[i] < studentai[m].nd[j]){
+                int temp = studentai[m].nd[i];
+                studentai[m].nd[i] = studentai[m].nd[j];
+                studentai[m].nd[j] = temp;
+            }
+        }
+    }
+
+    if(studentai[m].n % 2 == 0){
+        studentai[m].mediana = (studentai[m].nd[studentai[m].n/2] + studentai[m].nd[studentai[m].n/2 + 1]) / 2;
+    } else {
+        studentai[m].mediana = studentai[m].nd[studentai[m].n/2 + 1];
+    }
+
+    return studentai[m].mediana;
 }
 
 void atvaizd(Studentas*& studentai, int skaiciavimas, int m){
