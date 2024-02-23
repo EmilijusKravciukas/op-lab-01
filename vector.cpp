@@ -6,6 +6,7 @@
 #include <locale>
 #include <time.h>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -92,7 +93,12 @@ void duomSkait(vector<Studentas>& studentai){
         m++;
     }
 
-    atvaizd(studentai, m);
+    cout<<"Pasirinkite rikiavimo būdą: " << endl
+        <<"(1) Pagal studento vardą" << endl
+        <<"(2) Pagal studento pavarde" << endl
+        <<"(3) Pagal studento galutinį pažymį" << endl;
+
+    atvaizd(studentai, m, intIvestis(1, 3));
 }
 
 void ivestis(vector<Studentas>& studentai){
@@ -187,7 +193,12 @@ void ivestis(vector<Studentas>& studentai){
 
             m++;
         } else if(cInput == 4){
-            atvaizd(studentai, m);
+            cout<<"Pasirinkite rikiavimo būdą: " << endl
+                <<"(1) Pagal studento vardą" << endl
+                <<"(2) Pagal studento pavarde" << endl
+                <<"(3) Pagal studento galutinį pažymį" << endl;
+
+                atvaizd(studentai, m, intIvestis(1, 3));
         }
     }
 }
@@ -317,7 +328,11 @@ bool rikiavimasPaz(Studentas& s1, Studentas& s2){
 
 void atvaizd(vector<Studentas>& studentai, int m, int rikiavimas){
     if(rikiavimas == 1){
-        
+        sort(studentai.begin(), studentai.end(), rikiavimasVardu);
+    } else if(rikiavimas == 2){
+        sort(studentai.begin(), studentai.end(), rikiavimasPavarde);
+    } else if(rikiavimas == 3){
+        sort(studentai.begin(), studentai.end(), rikiavimasPaz);
     }
 
     cout << left << setw(16) << "Vardas" << left << setw(16) << "Pavardė" << left << setw(16) << "Galutinis (Vid.)" << endl;
