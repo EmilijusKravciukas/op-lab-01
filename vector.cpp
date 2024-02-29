@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <string>
 #include <random>
-#include <locale>
+#include <locale.h>
 #include <time.h>
 #include <vector>
 #include <algorithm>
@@ -11,8 +11,8 @@
 using namespace std;
 
 struct Studentas{
-        string vardas;
-        string pavarde;
+        wstring vardas;
+        wstring pavarde;
         int n;
         vector<int> nd;
         int egz;
@@ -23,7 +23,7 @@ struct Studentas{
 void duomSkait(vector<Studentas>& studentai);
 void ivestis(vector<Studentas>& studentai);
 void atvaizd(vector<Studentas>& studentai, int m, int rikiavimas);
-string stringIvestis();
+wstring stringIvestis();
 int intIvestis(int sRange, int eRange);
 int randGen(int sRange, int eRange);
 double rastiVid(Studentas studentasTemp);
@@ -33,6 +33,8 @@ double rastiVid(vector<Studentas>& studentai, int m);
 double rastiMed(vector<Studentas>& studentai, int m);
 
 int main(){
+    locale::global(locale("en_US"));
+
     srand(time(0));
     system("chcp 65001  > nul");
 
@@ -61,15 +63,15 @@ void duomSkait(vector<Studentas>& studentai){
 
     cin >> duomPav;
 
-    ifstream DF(duomPav);
+    wifstream DF(duomPav);
 
-    string tempString;
+    wstring tempString;
     int tempInt;
     unsigned int m = 0;
 
     do{
         DF >> tempString;
-    }while(tempString != "Egz.");
+    }while(tempString != L"Egz.");
 
     while(DF.peek() != EOF){
         studentai.resize(m+1);
@@ -133,8 +135,8 @@ void ivestis(vector<Studentas>& studentai){
                     n++;
                 } else {
                     cout << "Įveskite studento egzamino pažymį: ";
-                    studentasTemp.egz = intIvestis(0, 10);
-                    studentasTemp.n = n+1;
+                    studentasTemp.egz = intIvestis(1, 10);
+                    studentasTemp.n = n;
                     studentasTemp.vid = rastiVid(studentasTemp);
                     studentasTemp.mediana = rastiMed(studentasTemp);
 
@@ -142,7 +144,7 @@ void ivestis(vector<Studentas>& studentai){
                 }
             }
             
-            studentai.emplace_back(studentasTemp);
+            studentai.push_back(studentasTemp);
 
             m++;
         } else if(cInput == 2){
@@ -166,7 +168,7 @@ void ivestis(vector<Studentas>& studentai){
             studentasTemp.vid = rastiVid(studentasTemp);
             studentasTemp.mediana = rastiMed(studentasTemp);
 
-            studentai.emplace_back(studentasTemp);
+            studentai.push_back(studentasTemp);
 
             m++;
         } else if(cInput == 3){
@@ -174,8 +176,8 @@ void ivestis(vector<Studentas>& studentai){
             
             Studentas studentasTemp;
 
-            vector<string> vardai = {"Rokas", "Karolis", "Nojus", "Edgaras", "Martynas", "Gytis", "Justas"};
-            vector<string> pavardes = {"Kazlauskas", "Stankevičius", "Petrauskas", "Jankauskas", "Žukauskas", "Butkus", "Balčiūnas"};
+            vector<wstring> vardai = {L"Rokas", L"Karolis", L"Nojus", L"Edgaras", L"Martynas", L"Gytis", L"Justas"};
+            vector<wstring> pavardes = {L"Kazlauskas", L"Stankevičius", L"Petrauskas", L"Jankauskas", L"Žukauskas", L"Butkus", L"Balčiūnas"};
 
             studentasTemp.vardas = vardai[randGen(0, 6)];
             studentasTemp.pavarde = pavardes[randGen(0, 6)];
@@ -191,6 +193,8 @@ void ivestis(vector<Studentas>& studentai){
             studentasTemp.vid = rastiVid(studentasTemp);
             studentasTemp.mediana = rastiMed(studentasTemp);
 
+            studentai.push_back(studentasTemp);
+
             m++;
         } else if(cInput == 4){
             cout<<"Pasirinkite rikiavimo būdą: " << endl
@@ -203,13 +207,13 @@ void ivestis(vector<Studentas>& studentai){
     }
 }
 
-string stringIvestis(){
-    string cInput;
+wstring stringIvestis(){
+    wstring cInput;
     bool loop = false;
 
     do{
         loop = false;
-        cin >> cInput;
+        wcin >> cInput;
         for(char a : cInput){
             if(isblank(a) || isdigit(a) || cInput.length() > 16){
                 loop = true;
@@ -286,9 +290,9 @@ double rastiMed(Studentas studentasTemp){
     }
 
     if(studentasTemp.n % 2 == 0){
-        studentasTemp.mediana = (studentasTemp.nd[studentasTemp.n/2] + studentasTemp.nd[studentasTemp.n/2 + 1]) / 2;
+        studentasTemp.mediana = double(studentasTemp.nd[studentasTemp.n/2 - 1] + studentasTemp.nd[studentasTemp.n/2]) / 2;
     } else {
-        studentasTemp.mediana = studentasTemp.nd[studentasTemp.n/2 + 1];
+        studentasTemp.mediana = studentasTemp.nd[studentasTemp.n/2];
     }
 
     return studentasTemp.mediana;
@@ -335,12 +339,17 @@ void atvaizd(vector<Studentas>& studentai, int m, int rikiavimas){
         sort(studentai.begin(), studentai.end(), rikiavimasPaz);
     }
 
-    cout << left << setw(16) << "Vardas" << left << setw(16) << "Pavardė" << left << setw(16) << "Galutinis (Vid.)" << endl;
+    cout << left << setw(20) << "Vardas" << left << setw(20) << "Pavardė" << left << setw(20) << "Galutinis (Vid.)" << left << setw(20) << "Galutinis (Med.)" << endl;
     cout << "---------------------------------------------------------------------------" << m << endl;
+    cout << setprecision(2) << fixed;
     for(int i = 0; i < m; i++){
-        cout << left << setw(15) << studentai[i].vardas
-            << left << setw(16) << studentai[i].pavarde
-            << setprecision(2) << fixed << left << setw(16) << studentai[i].vid * 0.4 + double(studentai[i].egz) * 0.6
-            << setprecision(2) << fixed << left << setw(16) << studentai[i].mediana * 0.4 + double(studentai[i].egz) * 0.6 << endl;
+        wcout << left << setw(20) << studentai[i].vardas
+            << left << setw(20) << studentai[i].pavarde
+            << left << setw(20) << studentai[i].vid * 0.4 + double(studentai[i].egz) * 0.6
+            << left << setw(20) << studentai[i].mediana * 0.4 + double(studentai[i].egz) * 0.6 << " ";
+            for(int j= 0; j < studentai[i].n; j++) {
+                cout << studentai[i].nd[j] << " ";
+            }
+            cout<<"| "<<studentai[i].egz<<endl;
     }
 }
