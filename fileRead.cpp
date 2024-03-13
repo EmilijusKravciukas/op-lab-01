@@ -23,6 +23,8 @@ void duomSkait(vector<Studentas>& studentai){
     cin >> duomPav;
 
     try{
+        auto tStart = chrono::steady_clock::now();
+
         ifstream DF(duomPav);
 
         if(!DF.is_open()){
@@ -62,6 +64,11 @@ void duomSkait(vector<Studentas>& studentai){
 
         m++;
         }
+
+        auto tEnd = chrono::steady_clock::now();
+        auto tDuration = chrono::duration_cast<std::chrono::milliseconds>(tEnd - tStart);
+
+        cout << "Failo skaitymas uztruko : " << tDuration.count() << " milisekundziu" << std::endl;
 
         cout<<"Pasirinkite rikiavimo būdą: " << endl
         <<"(1) Pagal studento vardą" << endl
