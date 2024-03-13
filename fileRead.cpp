@@ -1,24 +1,47 @@
 #include "fileRead.h"
 
 void duomSkait(vector<Studentas>& studentai){
-    system("dir *.txt");
-    cout<<"Pasirinkite duomenų failą: ";
+
+    try{
+        string command = "dir *.txt 2>" "NUL";
+
+        int directoryCheck = system(command.c_str());
+
+        if(directoryCheck != 0){
+            throw runtime_error("Nerasta duomenu failu");
+        }
+
+        //system("dir *.txt");
+        cout<<"Pasirinkite duomenų failą: ";
+
+    } catch(const runtime_error& e){
+        cerr << e.what() << endl;
+    }
 
     string duomPav;
 
     cin >> duomPav;
 
-    ifstream DF(duomPav);
+    try{
+        ifstream DF(duomPav);
 
-    string tempString;
-    int tempInt;
-    unsigned int m = 0;
+        if(!DF.is_open()){
+            throw runtime_error("Nepavyko atidaryti failo");
+        }
 
-    do{
-        DF >> tempString;
-    }while(tempString != "Egz.");
+        string tempString;
+         int tempInt;
+        unsigned int m = 0;
 
-    while(DF.peek() != EOF){
+        do{
+            DF >> tempString;
+        }while(tempString != "Egz.");
+
+        if(DF.fail()){
+            throw runtime_error("Nepavyko nuskaityti duomenis");
+        }
+
+        while(DF.peek() != EOF){
         studentai.resize(m+1);
         DF >> studentai[m].vardas;
         DF >> studentai[m].pavarde;
@@ -38,12 +61,15 @@ void duomSkait(vector<Studentas>& studentai){
         studentai[m].mediana = rastiMed(studentai, m);
 
         m++;
-    }
+        }
 
-    cout<<"Pasirinkite rikiavimo būdą: " << endl
+        cout<<"Pasirinkite rikiavimo būdą: " << endl
         <<"(1) Pagal studento vardą" << endl
         <<"(2) Pagal studento pavarde" << endl
         <<"(3) Pagal studento galutinį pažymį" << endl;
 
-    atvaizd(studentai, m, intIvestis(1, 3));
+        atvaizd(studentai, m, intIvestis(1, 3));
+    } catch(const runtime_error& e){
+        cerr << e.what() << endl;
+    }
 }
