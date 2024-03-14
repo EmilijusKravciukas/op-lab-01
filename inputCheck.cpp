@@ -8,7 +8,7 @@ string stringIvestis(){
         loop = false;
         cin >> cInput;
         for(char a : cInput){
-            if(isblank(a) || isdigit(a) || cInput.length() > 16){
+            if(isblank(a) || isdigit(a) || cInput.length() > 20){
                 loop = true;
             }
         }
