@@ -68,7 +68,7 @@ void duomSkait(){
         auto tEnd = chrono::steady_clock::now();
         auto tDuration = chrono::duration_cast<chrono::milliseconds>(tEnd - tStart);
 
-        cout << "Failo skaitymas uztruko : " << double(tDuration.count())/1000 << " sekundziu" << endl;
+        cout << "Failo skaitymas uztruko: " << double(tDuration.count())/1000 << " sekundziu" << endl;
 
         cout<<"Pasirinkite rikiavimo būdą: " << endl
             <<"(1) Pagal studento vardą" << endl
