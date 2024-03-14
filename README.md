@@ -15,8 +15,10 @@ You will have to use a c++ compiler. Import the extracted folder and press Build
 Upon building and launching the program you will be presented with a console interface. Input numbers (1 to 4 in the starting menu) to navigate the interface.
 ## FORMATTING
 The program only reads data files that follow the following formatting:
-`Vardas                   Pavarde                    ND1       ND2       ND3      Egz.`
-`Vardas1                 Pavarde1                      8         9         4        10`
-`Vardas2                 Pavarde2                      9         7         9         2`
-`...                                                                                  `
+```
+Vardas                   Pavarde                    ND1       ND2       ND3      Egz.
+Vardas1                 Pavarde1                      8         9         4        10
+Vardas2                 Pavarde2                      9         7         9         2
+...                                                                                  
+```
 Vardas and Pavarde refer to Name and Surname values, ND(number) shows the homework mark along with its iterator, Egz. refers to the exam mark. Number of homework marks can be varied indefinitely, yet they cannot be equal to zero. Exam mark is required.
