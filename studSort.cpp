@@ -4,28 +4,30 @@
 #define WRITING_ERROR "Nepavyko irasyti duomenu i faila"
 
 void studSort(vector<Studentas>& studentai, unsigned int m, int rikiavimas){
-    sort(studentai.begin(), studentai.end(), rikiavimasPaz);
 
-    vector<Studentas> studentaiTemp;
+    vector<Studentas> studentaiGeri = studentai;
+    sort(studentaiGeri.begin(), studentaiGeri.end(), rikiavimasPaz);
+
+    vector<Studentas> studentaiBlogi;
 
     const double epsilon = 1e-9;
 
     for(int i = 0; i < m; i++){
-        if((studentai[i].vid * 0.4 + double(studentai[i].egz) * 0.6) < 5.0 - epsilon){
+        if((studentaiGeri[i].vid * 0.4 + double(studentaiGeri[i].egz) * 0.6) < 5.0 - epsilon){
             for(int j = i; j < m; j++){
-                studentaiTemp.push_back(studentai[j]);
+                studentaiBlogi.push_back(studentaiGeri[j]);
             }
-            studentai.erase(studentai.begin() + i, studentai.end());
+            studentaiGeri.erase(studentaiGeri.begin() + i, studentaiGeri.end());
             break;
         }
     }
 
     if(rikiavimas == 1){
-        sort(studentai.begin(), studentai.end(), rikiavimasVardu);
-        sort(studentaiTemp.begin(), studentaiTemp.end(), rikiavimasVardu);
+        sort(studentaiGeri.begin(), studentaiGeri.end(), rikiavimasVardu);
+        sort(studentaiBlogi.begin(), studentaiBlogi.end(), rikiavimasVardu);
     } else if(rikiavimas == 2){
-        sort(studentai.begin(), studentai.end(), rikiavimasPavarde);
-        sort(studentaiTemp.begin(), studentaiTemp.end(), rikiavimasPavarde);
+        sort(studentaiGeri.begin(), studentaiGeri.end(), rikiavimasPavarde);
+        sort(studentaiBlogi.begin(), studentaiBlogi.end(), rikiavimasPavarde);
     }
 
     try{
@@ -39,7 +41,7 @@ void studSort(vector<Studentas>& studentai, unsigned int m, int rikiavimas){
             throw runtime_error(WRITING_ERROR);
         }
 
-        for (Studentas studentas : studentaiTemp){
+        for (Studentas studentas : studentaiBlogi){
             if(!(LF << endl << left << setw(20) << studentas.vardas << left << setw(20) << studentas.pavarde << fixed << setprecision(2) << left << setw(20) << (studentas.vid * 0.4 + double(studentas.egz) * 0.6))){
                 throw runtime_error(WRITING_ERROR);
             }
@@ -59,7 +61,7 @@ void studSort(vector<Studentas>& studentai, unsigned int m, int rikiavimas){
             throw runtime_error(WRITING_ERROR);
         }
         
-        for (Studentas studentas : studentai){
+        for (Studentas studentas : studentaiGeri){
             if(!(MF << endl << left << setw(20) << studentas.vardas << left << setw(20) << studentas.pavarde << fixed << setprecision(2) << left << setw(20) << (studentas.vid * 0.4 + double(studentas.egz) * 0.6))){
                 throw runtime_error(WRITING_ERROR);
             }
