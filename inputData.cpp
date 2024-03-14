@@ -1,6 +1,8 @@
 #include "inputData.h"
 
-void ivestis(vector<Studentas>& studentai){
+void ivestis(){
+    vector<Studentas> studentai;
+
     bool loop = true;
     unsigned int m = 0;
     unsigned int n = 0;
@@ -99,7 +101,19 @@ void ivestis(vector<Studentas>& studentai){
                 <<"(2) Pagal studento pavarde" << endl
                 <<"(3) Pagal studento galutinį pažymį" << endl;
 
+            int rikiavimoBudas = intIvestis(1, 3);
+
+            cout<<"Pasirinkite atvaizdavimo buda: " << endl
+                <<"(1) Komandineje eiluteje" << endl
+                <<"(2) Issaugoti i du failus (rikiavimas pagal pasiekimus)" << endl;
+
+            int cInput = intIvestis(1, 2);
+            
+            if(cInput == 1){
+                studSort(studentai, m);
+            } else {
                 atvaizd(studentai, m, intIvestis(1, 3));
+            }
         }
     }
 }
