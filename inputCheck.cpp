@@ -20,6 +20,26 @@ string stringIvestis(){
     return cInput;
 }
 
+string fileIvestis(){
+    string cInput;
+    bool loop = false;
+
+    do{
+        loop = false;
+        cin >> cInput;
+        for(char a : cInput){
+            if(isblank(a) || cInput.length() > 30){
+                loop = true;
+            }
+        }
+        if(loop){
+            cout << "Klaida. Bandykite dar kartą: ";
+        }
+    }while(loop);
+
+    return cInput;
+}
+
 int intIvestis(int sRange, int eRange){
     int cInput;
     bool loop = false;
