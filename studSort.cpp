@@ -1,9 +1,5 @@
 #include "studSort.h"
 
-// bool rikiavimasPaz(Studentas& s1, Studentas& s2){
-//     return (s1.vid * 0.4 + s1.egz * 0.6) > (s2.vid * 0.4 + s2.egz * 0.6);
-// }
-
 void studSort(vector<Studentas>& studentai, unsigned int m){
     sort(studentai.begin(), studentai.end(), rikiavimasPaz);
 
