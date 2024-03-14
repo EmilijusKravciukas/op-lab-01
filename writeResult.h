@@ -9,3 +9,6 @@
 using namespace std;
 
 void atvaizd(vector<Studentas>& studentai, int m, int rikiavimas);
+bool rikiavimasPaz(Studentas& s1, Studentas& s2);
+bool rikiavimasPavarde(Studentas& s1, Studentas& s2);
+bool rikiavimasVardu(Studentas& s1, Studentas& s2);
