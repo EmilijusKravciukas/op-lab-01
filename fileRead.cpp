@@ -88,7 +88,7 @@ void duomSkait(){
         if(cInput == 1){
             atvaizd(studentai, m, rikiavimoBudas);
         } else {
-            studSort(studentai, m);
+            studSort(studentai, m, rikiavimoBudas);
         }
     } catch(const runtime_error& e){
         cerr << e.what() << endl;
