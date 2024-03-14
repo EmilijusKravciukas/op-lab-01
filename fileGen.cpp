@@ -4,7 +4,7 @@
 
 void generateFile(){
     cout << "Iveskite failo pavadinima: ";
-    string fileName = stringIvestis();
+    string fileName = fileIvestis();
 
     cout << "Iveskite studentu kieki: ";
     unsigned int stNum = intIvestis(0, INT32_MAX);
@@ -49,7 +49,9 @@ void generateFile(){
                     throw runtime_error(WRITING_ERROR);
                 }
             }
-            OF << endl;
+            if(i != (stNum - 1)){
+                OF << endl;
+            }
         }
 
         OF.close();
