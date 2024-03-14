@@ -12,26 +12,15 @@ void studSort(vector<Studentas>& studentai, unsigned int m){
 
     vector<Studentas> studentaiTemp;
 
-    // for(int i = 0; i < m; i++){
-    //     if((studentai[i].vid * 0.4 + double(studentai[i].egz * 0.6)) < 5){
-    //         for(int j = i; j < m; j++){
-    //             studentaiTemp.push_back(studentai[j]);
-    //             studentai.erase(studentai.begin() + j);
-    //             cout << studentaiTemp[i].vardas << " " << studentaiTemp[i].pavarde << endl;
-    //         }
-    //     }
-    // }
-
-    // ofstream LF("lopai.txt");
-
-    // LF << left << setw(20) << "Vardas" << left << setw(20) << "Pavarde" << left << setw(20) << "Galutinis paz." << endl;
-
-    // for (Studentas studentas : studentai){
-    //     LF << left << setw(20) << studentas.vardas << left << setw(20) << studentas.pavarde << left << setw(20) << studentas.vid * 0.4 + studentas.egz * 0.6 << endl;
-    //     //cout << left << setw(20) << studentas.vardas << left << setw(20) << studentas.pavarde << left << setw(20) << studentas.vid * 0.4 + studentas.egz * 0.6 << endl;
-    // }
-
-    // LF.close();
+    for(int i = 0; i < m; i++){
+        if((studentai[i].vid * 0.4 + double(studentai[i].egz * 0.6)) < 5){
+            for(int j = i; j < m; j++){
+                studentaiTemp.push_back(studentai[j]);
+            }
+            studentai.erase(studentai.begin() + i, studentai.end());
+            break;
+        }
+    }
 
     try{
         ofstream LF("lopai.txt");
@@ -44,8 +33,8 @@ void studSort(vector<Studentas>& studentai, unsigned int m){
             throw runtime_error(WRITING_ERROR);
         }
 
-        for (Studentas studentas : studentai){
-            if(!(LF << left << setw(20) << studentas.vardas << left << setw(20) << studentas.pavarde << left << setw(20) << (studentas.vid * 0.4 + studentas.egz * 0.6) << endl)){
+        for (Studentas studentas : studentaiTemp){
+            if(!(LF << left << setw(20) << studentas.vardas << left << setw(20) << studentas.pavarde << fixed << setprecision(2) << left << setw(20) << (studentas.vid * 0.4 + studentas.egz * 0.6) << endl)){
                 throw runtime_error(WRITING_ERROR);
             }
         }
@@ -53,14 +42,25 @@ void studSort(vector<Studentas>& studentai, unsigned int m){
         cout << e.what() << endl;
     }
 
+    try{
+        ofstream MF("malaciai.txt");
 
-    ofstream MF("malaciai.txt");
+        if(!MF.is_open()){
+            throw runtime_error(OPENING_ERROR);
+        }
 
-    MF << left << setw(20) << "Vardas" << left << setw(20) << "Pavarde" << left << setw(20) << "Galutinis paz." << endl;
+        if(!(MF << left << setw(20) << "Vardas" << left << setw(20) << "Pavarde" << left << setw(20) << "Galutinis paz." << endl)){
+            throw runtime_error(WRITING_ERROR);
+        }
+        
+        for (Studentas studentas : studentai){
+            if(!(MF << left << setw(20) << studentas.vardas << left << setw(20) << studentas.pavarde << fixed << setprecision(2) << left << setw(20) << (studentas.vid * 0.4 + double(studentas.egz * 0.6)) << endl)){
+                throw runtime_error(WRITING_ERROR);
+            }
+        }
 
-    for (Studentas studentas : studentaiTemp){
-        MF << left << setw(20) << studentas.vardas << left << setw(20) << studentas.pavarde << left << setw(20) << (studentas.vid * 0.4 + studentas.egz * 0.6) << endl;
+        MF.close();
+    } catch(runtime_error& e){
+        cout << e.what() << endl;
     }
-
-    MF.close();
 }
