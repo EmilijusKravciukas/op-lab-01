@@ -18,9 +18,7 @@ void duomSkait(){
         cerr << e.what() << endl;
     }
 
-    string duomPav;
-
-    cin >> duomPav;
+    string duomPav = fileIvestis();
 
     try{
         auto tStart = chrono::steady_clock::now();
