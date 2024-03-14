@@ -5,6 +5,7 @@
 #include "inputCheck.h"
 #include <iomanip>
 #include "randGen.h"
+#include <chrono>
 
 using namespace std;
 
