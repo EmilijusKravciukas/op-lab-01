@@ -13,6 +13,8 @@ void generateFile(){
     unsigned int pazNum = intIvestis(0, INT32_MAX);
 
     try{
+        auto tStart = chrono::steady_clock::now();
+
         ofstream OF(fileName);
 
         if(!OF.is_open()){
@@ -55,6 +57,11 @@ void generateFile(){
         }
 
         OF.close();
+
+        auto tEnd = chrono::steady_clock::now();
+        auto tDuration = chrono::duration_cast<chrono::milliseconds>(tEnd - tStart);
+
+        cout << "Failo kurimas uztruko: " << double(tDuration.count())/1000 << " sekundziu" << endl;
     } catch(runtime_error& e){
         cout << e.what() << right << endl;
     }
