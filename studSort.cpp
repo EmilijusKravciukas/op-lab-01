@@ -3,12 +3,8 @@
 #define OPENING_ERROR "Nepavyko atidaryti failo"
 #define WRITING_ERROR "Nepavyko irasyti duomenu i faila"
 
-void studSort(vector<Studentas>& studentai, unsigned int m){
+void studSort(vector<Studentas>& studentai, unsigned int m, int rikiavimas){
     sort(studentai.begin(), studentai.end(), rikiavimasPaz);
-
-    for(Studentas studentas : studentai){
-        cout<<studentas.vardas<<" "<<studentas.pavarde<<" "<<(studentas.vid*0.4 + double(studentas.egz) * 0.6)<<endl;
-    }
 
     vector<Studentas> studentaiTemp;
 
@@ -22,6 +18,14 @@ void studSort(vector<Studentas>& studentai, unsigned int m){
             studentai.erase(studentai.begin() + i, studentai.end());
             break;
         }
+    }
+
+    if(rikiavimas == 1){
+        sort(studentai.begin(), studentai.end(), rikiavimasVardu);
+        sort(studentaiTemp.begin(), studentaiTemp.end(), rikiavimasVardu);
+    } else if(rikiavimas == 2){
+        sort(studentai.begin(), studentai.end(), rikiavimasPavarde);
+        sort(studentaiTemp.begin(), studentaiTemp.end(), rikiavimasPavarde);
     }
 
     try{
