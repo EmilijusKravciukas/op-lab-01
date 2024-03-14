@@ -1,6 +1,7 @@
 #include "fileRead.h"
 
-void duomSkait(vector<Studentas>& studentai){
+void duomSkait(){
+    vector<Studentas> studentai;
 
     try{
         string command = "dir *.txt 2>" "NUL";
@@ -31,7 +32,7 @@ void duomSkait(vector<Studentas>& studentai){
         }
 
         string tempString;
-         int tempInt;
+        int tempInt;
         unsigned int m = 0;
 
         do{
@@ -43,25 +44,27 @@ void duomSkait(vector<Studentas>& studentai){
         }
 
         while(DF.peek() != EOF){
-        studentai.resize(m+1);
-        DF >> studentai[m].vardas;
-        DF >> studentai[m].pavarde;
+            Studentas studentasTemp;
+            DF >> studentasTemp.vardas;
+            DF >> studentasTemp.pavarde;
 
-        int n = 0;
+            studentai.push_back(studentasTemp);
 
-        while(DF.peek() != '\n' && DF.peek() != EOF){
-            DF >> tempInt;
-            n++;
-            studentai[m].nd.push_back(tempInt);
-        }
+            int n = 0;
 
-        studentai[m].egz = studentai[m].nd[n-1];
-        studentai[m].nd.pop_back();
-        studentai[m].n = n;
-        studentai[m].vid = rastiVid(studentai, m);
-        studentai[m].mediana = rastiMed(studentai, m);
+            while(DF.peek() != '\n' && DF.peek() != EOF){
+                DF >> tempInt;
+                n++;
+                studentai[m].nd.push_back(tempInt);
+            }
 
-        m++;
+            studentai[m].egz = studentai[m].nd[n-1];
+            studentai[m].nd.pop_back();
+            studentai[m].n = n;
+            studentai[m].vid = rastiVid(studentai, m);
+            studentai[m].mediana = rastiMed(studentai, m);
+
+            m++;
         }
 
         auto tEnd = chrono::steady_clock::now();
@@ -70,11 +73,23 @@ void duomSkait(vector<Studentas>& studentai){
         cout << "Failo skaitymas uztruko : " << double(tDuration.count())/1000 << " sekundziu" << endl;
 
         cout<<"Pasirinkite rikiavimo būdą: " << endl
-        <<"(1) Pagal studento vardą" << endl
-        <<"(2) Pagal studento pavarde" << endl
-        <<"(3) Pagal studento galutinį pažymį" << endl;
+            <<"(1) Pagal studento vardą" << endl
+            <<"(2) Pagal studento pavarde" << endl
+            <<"(3) Pagal studento galutinį pažymį" << endl;
 
-        atvaizd(studentai, m, intIvestis(1, 3));
+        int rikiavimoBudas = intIvestis(1, 3);
+
+        cout<<"Pasirinkite atvaizdavimo buda: " << endl
+            <<"(1) Komandineje eiluteje" << endl
+            <<"(2) Issaugoti i du failus (rikiavimas pagal pasiekimus)" << endl;
+
+        int cInput = intIvestis(1, 2);
+
+        if(cInput == 1){
+            atvaizd(studentai, m, rikiavimoBudas);
+        } else {
+            studSort(studentai, m);
+        }
     } catch(const runtime_error& e){
         cerr << e.what() << endl;
     }
