@@ -6,14 +6,16 @@ void ivestis(){
     bool loop = true;
     unsigned int m = 0;
     unsigned int n = 0;
-    while(loop){
-        cout << "Pasirinkite įvedimo būdą:" << endl
-        << "(1) Duomenų įvedimas ranka" << endl
-        << "(2) Generuoti pažymius" << endl
-        << "(3) Generuoti vardą, pavardę ir pažymius" << endl
-        << "(4) Baigti darbą" << endl;
+    int cInput = 0;
+    while(cInput != 5){
+        cout<< "Pasirinkite įvedimo būdą:" << endl
+            << "(1) Duomenų įvedimas ranka" << endl
+            << "(2) Generuoti pažymius" << endl
+            << "(3) Generuoti vardą, pavardę ir pažymius" << endl
+            << "(4) Atvaizduoti duomenis" << endl
+            << "(5) Baigti darbą" << endl;
 
-        int cInput = intIvestis(0, 10);
+        cInput = intIvestis(1, 5);
 
         if(cInput == 1){
             n = 0;
@@ -76,7 +78,7 @@ void ivestis(){
             Studentas studentasTemp;
 
             vector<string> vardai = {"Rokas", "Karolis", "Nojus", "Edgaras", "Martynas", "Gytis", "Justas"};
-            vector<string> pavardes = {"Kazlauskas", "Stankevičius", "Petrauskas", "Jankauskas", "Žukauskas", "Butkus", "Balčiūnas"};
+            vector<string> pavardes = {"Kazlauskas", "Stankevicius", "Petrauskas", "Jankauskas", "Zukauskas", "Butkus", "Balciunas"};
 
             studentasTemp.vardas = vardai[randGen(0, 6)];
             studentasTemp.pavarde = pavardes[randGen(0, 6)];
@@ -107,12 +109,12 @@ void ivestis(){
                 <<"(1) Komandineje eiluteje" << endl
                 <<"(2) Issaugoti i du failus (rikiavimas pagal pasiekimus)" << endl;
 
-            int cInput = intIvestis(1, 2);
+            int atvaizdBudas = intIvestis(1, 2);
             
-            if(cInput == 1){
-                studSort(studentai, m);
+            if(atvaizdBudas == 2){
+                studSort(studentai, m, rikiavimoBudas);
             } else {
-                atvaizd(studentai, m, intIvestis(1, 3));
+                atvaizd(studentai, m, rikiavimoBudas);
             }
         }
     }
