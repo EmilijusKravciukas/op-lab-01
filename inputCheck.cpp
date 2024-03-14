@@ -8,7 +8,27 @@ string stringIvestis(){
         loop = false;
         cin >> cInput;
         for(char a : cInput){
-            if(isblank(a) || isdigit(a) || cInput.length() > 16){
+            if(isblank(a) || isdigit(a) || cInput.length() > 20){
+                loop = true;
+            }
+        }
+        if(loop){
+            cout << "Klaida. Bandykite dar kartą: ";
+        }
+    }while(loop);
+
+    return cInput;
+}
+
+string fileIvestis(){
+    string cInput;
+    bool loop = false;
+
+    do{
+        loop = false;
+        cin >> cInput;
+        for(char a : cInput){
+            if(isblank(a) || cInput.length() > 30){
                 loop = true;
             }
         }

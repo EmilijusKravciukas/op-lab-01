@@ -6,7 +6,8 @@
 #include "randGen.h"
 #include "writeResult.h"
 #include "evaluation.h"
+#include "studSort.h"
 
 using namespace std;
 
-void ivestis(vector<Studentas>& studentai);
+void ivestis();

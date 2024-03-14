@@ -7,6 +7,7 @@
 #include "inputCheck.h"
 #include "inputData.h"
 #include "studentas.h"
+#include "fileGen.h"
 
 using namespace std;
 
@@ -14,19 +15,26 @@ int main(){
     srand(time(0));
     system("chcp 65001  > nul");
 
-    cout<<"Pasirinkite įvedimo būdą: " << endl
-        << "(1) Rankinis įvedimo būdas" << endl
-        << "(2) Skaitymas iš failo" << endl;
+    int cInput = 0;
 
-    int cInput = intIvestis(1, 2);
+    while(cInput != 4){
+        cout<<"Menu: " << endl
+            << "(1) Rankinis įvedimo būdas" << endl
+            << "(2) Skaitymas iš failo" << endl
+            << "(3) Generuoti duomenu faila" << endl
+            << "(4) Baigti darbą" << endl;
 
-    vector<Studentas> studentai;
+        cInput = intIvestis(1, 4);
 
-    if(cInput == 1){
-        ivestis(studentai);
-    } else if(cInput == 2){
-        duomSkait(studentai);
+        if(cInput == 1){
+            ivestis();
+        } else if(cInput == 2){
+            duomSkait();
+        } else if(cInput == 3){
+            generateFile();
+        }
     }
+    
 
     return 0;
 }

@@ -9,7 +9,7 @@ bool rikiavimasPavarde(Studentas& s1, Studentas& s2){
 }
 
 bool rikiavimasPaz(Studentas& s1, Studentas& s2){
-    return (s1.vid * 0.4 + s1.egz * 0.6) > (s2.vid * 0.4 + s2.egz * 0.6);
+    return (s1.vid * 0.4 + double(s1.egz * 0.6)) > (s2.vid * 0.4 + double(s2.egz * 0.6));
 }
 
 void atvaizd(vector<Studentas>& studentai, int m, int rikiavimas){
