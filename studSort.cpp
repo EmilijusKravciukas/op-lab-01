@@ -6,11 +6,21 @@
 void studSort(vector<Studentas>& studentai, unsigned int m, int rikiavimas){
 
     vector<Studentas> studentaiGeri = studentai;
+
+    auto globalTStart = chrono::steady_clock::now();
+    auto tStart = chrono::steady_clock::now();
+
     sort(studentaiGeri.begin(), studentaiGeri.end(), rikiavimasPaz);
+
+    auto tEnd = chrono::steady_clock::now();
+    auto tDuration = chrono::duration_cast<chrono::milliseconds>(tEnd - tStart);
+    cout << "Vektorio rusiavimas mazejimo tvarka uztruko: " << double(tDuration.count())/1000 << " sekundziu" << endl;
 
     vector<Studentas> studentaiBlogi;
 
     const double epsilon = 1e-9;
+
+    tStart = chrono::steady_clock::now();
 
     for(int i = 0; i < m; i++){
         if((studentaiGeri[i].vid * 0.4 + double(studentaiGeri[i].egz) * 0.6) < 5.0 - epsilon){
@@ -22,6 +32,12 @@ void studSort(vector<Studentas>& studentai, unsigned int m, int rikiavimas){
         }
     }
 
+    tEnd = chrono::steady_clock::now();
+    tDuration = chrono::duration_cast<chrono::milliseconds>(tEnd - tStart);
+    cout << "Irasu dalijimas i dvi grupes uztruko: " << double(tDuration.count())/1000 << " sekundziu" << endl;
+
+    tStart = chrono::steady_clock::now();
+
     if(rikiavimas == 1){
         sort(studentaiGeri.begin(), studentaiGeri.end(), rikiavimasVardu);
         sort(studentaiBlogi.begin(), studentaiBlogi.end(), rikiavimasVardu);
@@ -30,7 +46,13 @@ void studSort(vector<Studentas>& studentai, unsigned int m, int rikiavimas){
         sort(studentaiBlogi.begin(), studentaiBlogi.end(), rikiavimasPavarde);
     }
 
+    tEnd = chrono::steady_clock::now();
+    tDuration = chrono::duration_cast<chrono::milliseconds>(tEnd - tStart);
+    cout << "Dvieju vektoriu rusiavimas uztruko: " << double(tDuration.count())/1000 << " sekundziu" << endl;
+
     try{
+        tStart = chrono::steady_clock::now();
+
         ofstream LF("lopai.txt");
 
         if(!LF.is_open()){
@@ -46,11 +68,17 @@ void studSort(vector<Studentas>& studentai, unsigned int m, int rikiavimas){
                 throw runtime_error(WRITING_ERROR);
             }
         }
+
+        tEnd = chrono::steady_clock::now();
+        tDuration = chrono::duration_cast<chrono::milliseconds>(tEnd - tStart);
+        cout << "Silpnesniu studentu duomenu failo kurimas ir irasymas uztruko: " << double(tDuration.count())/1000 << " sekundziu" << endl;
     } catch(runtime_error& e){
         cout << e.what() << endl;
     }
 
     try{
+        tStart = chrono::steady_clock::now();
+
         ofstream MF("malaciai.txt");
 
         if(!MF.is_open()){
@@ -68,7 +96,15 @@ void studSort(vector<Studentas>& studentai, unsigned int m, int rikiavimas){
         }
 
         MF.close();
+
+        tEnd = chrono::steady_clock::now();
+        tDuration = chrono::duration_cast<chrono::milliseconds>(tEnd - tStart);
+        cout << "Stipresniu studentu duomenu failo kurimas ir irasymas uztruko: " << double(tDuration.count())/1000 << " sekundziu" << endl;
     } catch(runtime_error& e){
         cout << e.what() << endl;
     }
+
+    auto globalTEnd = chrono::steady_clock::now();
+    auto globalTDuration = chrono::duration_cast<chrono::milliseconds>(globalTEnd - globalTStart);
+    cout << endl << "Visos operacijos uztruko kartu: " << double(globalTDuration.count())/1000 << " sekundziu" << endl << endl;
 }
