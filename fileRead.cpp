@@ -24,36 +24,35 @@ void duomSkait(){
         auto tStart = chrono::steady_clock::now();
 
         ifstream DF(duomPav);
+        string line;
 
         if(!DF.is_open()){
             throw runtime_error("Nepavyko atidaryti failo");
         }
 
         string tempString;
-        int tempInt;
         unsigned int m = 0;
 
-        do{
-            DF >> tempString;
-        }while(tempString != "Egz.");
+        getline(DF, line);
 
         if(DF.fail()){
             throw runtime_error("Nepavyko nuskaityti duomenis");
         }
 
-        while(DF.peek() != EOF){
+        while(getline(DF, line)){
+            stringstream ss(line);
             Studentas studentasTemp;
-            DF >> studentasTemp.vardas;
-            DF >> studentasTemp.pavarde;
+            ss >> studentasTemp.vardas >> studentasTemp.pavarde;
 
             studentai.push_back(studentasTemp);
 
             int n = 0;
 
-            while(DF.peek() != '\n' && DF.peek() != EOF){
-                DF >> tempInt;
+            int num;
+
+            while(ss >> num){
                 n++;
-                studentai[m].nd.push_back(tempInt);
+                studentai[m].nd.push_back(num);
             }
 
             studentai[m].egz = studentai[m].nd[n-1];
@@ -64,6 +63,30 @@ void duomSkait(){
 
             m++;
         }
+
+        // while(DF.peek() != EOF){
+        //     Studentas studentasTemp;
+        //     DF >> studentasTemp.vardas;
+        //     DF >> studentasTemp.pavarde;
+
+        //     studentai.push_back(studentasTemp);
+
+        //     int n = 0;
+
+        //     while(DF.peek() != '\n' && DF.peek() != EOF){
+        //         DF >> tempInt;
+        //         n++;
+        //         studentai[m].nd.push_back(tempInt);
+        //     }
+
+        //     studentai[m].egz = studentai[m].nd[n-1];
+        //     studentai[m].nd.pop_back();
+        //     studentai[m].n = n;
+        //     studentai[m].vid = rastiVid(studentai, m);
+        //     studentai[m].mediana = rastiMed(studentai, m);
+
+        //     m++;
+        // }
 
         auto tEnd = chrono::steady_clock::now();
         auto tDuration = chrono::duration_cast<chrono::milliseconds>(tEnd - tStart);

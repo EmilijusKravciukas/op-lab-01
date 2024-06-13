@@ -6,6 +6,7 @@
 #include <iomanip>
 #include "randGen.h"
 #include <chrono>
+#include <sstream>
 
 using namespace std;
 
